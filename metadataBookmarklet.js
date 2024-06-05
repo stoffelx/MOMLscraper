@@ -1,15 +1,30 @@
 javascript:
-prodCode = "MMLP";
-prodName = "Part II: 1763-1970";
-baseUrl = "https://go.gale.com/ps/i.do?p=" + prodCode + "&id=";
-appendUrl = "&v=2.1&it=r";
-outline = "";
+prodCode = "";
+prodName = "";
+delimitClass = "js-metadata-box metadata-box citation-pagecount";
 coreData = [];
 editData = [];
 inTags = document.getElementsByTagName("input");
 snwTags = document.querySelectorAll(".snippetWrapper > span");
+for ( i = 0; i < inTags.length; ++i) {
+     if (/prodId/.test(inTags[i].name)) {
+         prodCode = inTags[i].value.toString();
+     };
+};
+baseUrl = "https://go.gale.com/ps/i.do?p=" + prodCode + "&id=";
+appendUrl = "&v=2.1&it=r";
+for ( i = 0; i < inTags.length; ++i) {
+    if (/productName/.test(inTags[i].name)) {
+        prodName = inTags[i].value.toString().replace(/^.*:/, "");
+    };
+};
+console.log(prodName + "\n");
+outline = "";
 for ( i = 0; i < inTags.length; ++i) { 
-	if (/documentId|documentTitle/.test(inTags[i].name)) {
+    if (/js-attributed-product-name/.test(inTags[i].className)) {
+		 coreData.push(inTags[i].value);
+	}
+	else if (/documentId|documentTitle/.test(inTags[i].name)) {
 		if (/documentTitle/.test(inTags[i].name)) {
 			coreData.push(inTags[i].value);
 			coreData.push("%");
@@ -20,15 +35,16 @@ for ( i = 0; i < inTags.length; ++i) {
 	};
 };
 for ( i = 0; i < snwTags.length; ++i) {
-	snwMatch = new RegExp("Found in " + prodName);
-	if (snwMatch.test(snwTags[i].innerText)) {
+	snwMatch = new RegExp(delimitClass);
+	if (snwMatch.test(snwTags[i].className)) {
 		editData.push(snwTags[i].innerText);
+		editData.push(prodName);
 		editData.push("%");
 	} else {
 	editData.push(snwTags[i].innerText);
 	};
 }; 
-function combineArrays(arr1, arr2, delimiter) {
+function combineArrays(arr1, arr2, delimiter) {	
 result = [];
 i = 0, j = 0;
 switchArray = false;
@@ -56,6 +72,6 @@ return result;
 }
 delimiter = "%";
 combinedArray = combineArrays(coreData, editData, delimiter);
-outRepl = new RegExp("Found in " + prodName + "%", "g");
-outline = combinedArray.join("%").replace(outRepl, "Found in " + prodName + "\n");
+outRepl = new RegExp("%https", "g");
+outline = combinedArray.join("%").replace(outRepl, "\nhttps");
 console.log(outline);
