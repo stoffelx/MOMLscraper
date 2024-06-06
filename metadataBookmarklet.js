@@ -1,7 +1,10 @@
 javascript:
 prodCode = "";
 prodName = "";
+outline = "";
 delimitClass = "js-metadata-box metadata-box citation-pagecount";
+baseUrl = "https://go.gale.com/ps/i.do?p=" + prodCode + "&id=";
+appendUrl = "&v=2.1&it=r";
 coreData = [];
 editData = [];
 inTags = document.getElementsByTagName("input");
@@ -11,15 +14,11 @@ for ( i = 0; i < inTags.length; ++i) {
          prodCode = inTags[i].value.toString();
      };
 };
-baseUrl = "https://go.gale.com/ps/i.do?p=" + prodCode + "&id=";
-appendUrl = "&v=2.1&it=r";
 for ( i = 0; i < inTags.length; ++i) {
     if (/productName/.test(inTags[i].name)) {
         prodName = inTags[i].value.toString().replace(/^.*:/, "");
     };
 };
-console.log(prodName + "\n");
-outline = "";
 for ( i = 0; i < inTags.length; ++i) { 
     if (/js-attributed-product-name/.test(inTags[i].className)) {
 		 coreData.push(inTags[i].value);
