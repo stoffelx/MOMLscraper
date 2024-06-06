@@ -2,11 +2,9 @@ javascript:
 prodCode = "";
 prodName = "";
 outline = "";
-delimitClass = "js-metadata-box metadata-box citation-pagecount";
-baseUrl = "https://go.gale.com/ps/i.do?p=" + prodCode + "&id=";
-appendUrl = "&v=2.1&it=r";
 coreData = [];
 editData = [];
+delimitClass = "js-metadata-box metadata-box citation-pagecount";
 inTags = document.getElementsByTagName("input");
 snwTags = document.querySelectorAll(".snippetWrapper > span");
 for ( i = 0; i < inTags.length; ++i) {
@@ -14,6 +12,8 @@ for ( i = 0; i < inTags.length; ++i) {
          prodCode = inTags[i].value.toString();
      };
 };
+baseUrl = "https://go.gale.com/ps/i.do?p=" + prodCode + "&id=";
+appendUrl = "&v=2.1&it=r";
 for ( i = 0; i < inTags.length; ++i) {
     if (/productName/.test(inTags[i].name)) {
         prodName = inTags[i].value.toString().replace(/^.*:/, "");
